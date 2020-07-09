@@ -1,0 +1,11 @@
+Webpack
+    Babel
+    SCSS
+    Modes
+        Dev
+            Server
+            SourceMaps
+            Not minified code
+            Eslint
+        Prod
+            Minified Code
