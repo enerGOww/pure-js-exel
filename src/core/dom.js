@@ -5,6 +5,10 @@ class Dom {
       : selector
   }
 
+  get dataset() {
+    return this.$el.dataset
+  }
+
   setHtml(html) {
     if (typeof html === 'string') {
       this.$el.innerHTML = html
@@ -38,6 +42,26 @@ class Dom {
     }
 
     return this
+  }
+
+  closest(selector) {
+    return dom(this.$el.closest(selector))
+  }
+
+  getCoords() {
+    return this.$el.getBoundingClientRect()
+  }
+
+  addClass(className) {
+    this.$el.classList.add(className)
+  }
+
+  removeClass(className) {
+    this.$el.classList.remove(className)
+  }
+
+  findAll(selector) {
+    return this.$el.querySelectorAll(selector)
   }
 }
 
