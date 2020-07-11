@@ -13,7 +13,7 @@ export class Table extends BaseComponent {
   }
 
   toHTML() {
-    return generateTable(20)
+    return generateTable(1000)
   }
 
   onMousedown(event) {
@@ -23,24 +23,29 @@ export class Table extends BaseComponent {
       const coords = parent.getCoords()
 
       parent.addClass('blue-line')
-      const cells = this.$root.findAll(`[data-column-name="${parent.dataset.columnName}"]`)
 
+      let size
       document.onmousemove = e => {
         if (element === 'column') {
           const delta = e.pageX - coords.right
-          const size = coords.width + delta + 'px'
+          size = coords.width + delta + 'px'
 
-          parent.$el.style.width = size
-          cells.forEach(value => value.style.width = size)
+          parent.css({width: size})
         } else {
           const delta = e.pageY - coords.bottom
-          parent.$el.style.height = coords.height + delta + 'px'
+          parent.css({height: coords.height + delta + 'px'})
         }
       }
 
       document.onmouseup = () => {
+        if (element === 'column') {
+          this.$root
+              .findAll(`[data-column-name="${parent.dataset.columnName}"]`)
+              .forEach(value => value.style.width = size)
+        }
         parent.removeClass('blue-line')
         document.onmousemove = null
+        document.onmouseup = null
       }
     }
   }
