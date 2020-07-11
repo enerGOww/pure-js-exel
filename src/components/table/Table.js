@@ -13,7 +13,7 @@ export class Table extends BaseComponent {
   }
 
   toHTML() {
-    return generateTable(1000)
+    return generateTable(100)
   }
 
   onMousedown(event) {
