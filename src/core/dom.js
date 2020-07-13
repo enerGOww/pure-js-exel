@@ -52,16 +52,24 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  addClass(className) {
-    this.$el.classList.add(className)
+  addClass(...classNames) {
+    for (const className of classNames) {
+      this.$el.classList.add(className)
+    }
   }
 
-  removeClass(className) {
-    this.$el.classList.remove(className)
+  removeClass(...classNames) {
+    for (const className of classNames) {
+      this.$el.classList.remove(className)
+    }
   }
 
   findAll(selector) {
     return this.$el.querySelectorAll(selector)
+  }
+
+  find(select) {
+    return dom(this.$el.querySelector(select))
   }
 
   css(styles = {}) {

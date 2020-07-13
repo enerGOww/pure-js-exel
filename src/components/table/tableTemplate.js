@@ -5,7 +5,12 @@ const CODES = {
 
 function createCell(columnName, rowName) {
   return `
-    <div class="table__cell" contenteditable="true" data-column-name="${columnName}" data-row-name="${rowName}"></div>
+    <div
+      class="table__cell"
+      contenteditable="true"
+      data-column-name="${columnName}"
+      data-id="${rowName}:${columnName}"
+    ></div>
   `
 }
 
