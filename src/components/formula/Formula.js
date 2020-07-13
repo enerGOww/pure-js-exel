@@ -3,10 +3,11 @@ import {BaseComponent} from '@core/BaseComponent'
 export class Formula extends BaseComponent {
   static className = 'formula'
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: Formula.className,
-      listeners: ['input'],
+      listeners: ['input', 'keydown'],
+      ...options,
     })
   }
 
@@ -16,12 +17,29 @@ export class Formula extends BaseComponent {
       <div 
         class="formula__input" 
         contenteditable="true" 
-        spellcheck="false">
-      </div>
+        spellcheck="false"
+        data-input="formula"
+      ></div>
     `
   }
 
+  init() {
+    super.init()
+    const input = this.$root.find(`[data-input="formula"]`)
+
+    this.on('table:switch-selected', text => input.rewriteText(text))
+        .on('table:input', text => input.rewriteText(text))
+  }
+
   onInput(event) {
-    console.log('Formula:', event.target.textContent.trim())
+    const text = event.target.textContent.trim()
+    this.emit('formula:input', text)
+  }
+
+  onKeydown(event) {
+    if (event.key === 'Enter' || event.key === 'Tab') {
+      event.preventDefault()
+      this.emit('formula:enter')
+    }
   }
 }

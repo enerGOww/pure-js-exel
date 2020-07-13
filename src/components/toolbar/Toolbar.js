@@ -3,6 +3,13 @@ import {BaseComponent} from '@core/BaseComponent'
 export class Toolbar extends BaseComponent {
   static className = 'toolbar'
 
+  constructor($root, options) {
+    super($root, {
+      name: 'header',
+      ...options,
+    });
+  }
+
   toHTML() {
     return `
       <div class="toolbar__button">

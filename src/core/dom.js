@@ -20,6 +20,15 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  rewriteText(text) {
+    this.$el.textContent = text
+    return this
+  }
+
+  getText() {
+    return this.$el.textContent !== null ? this.$el.textContent : ''
+  }
+
   clear() {
     this.setHtml('')
     return this
@@ -52,16 +61,29 @@ class Dom {
     return this.$el.getBoundingClientRect()
   }
 
-  addClass(className) {
-    this.$el.classList.add(className)
+  addClass(...classNames) {
+    for (const className of classNames) {
+      this.$el.classList.add(className)
+    }
   }
 
-  removeClass(className) {
-    this.$el.classList.remove(className)
+  removeClass(...classNames) {
+    for (const className of classNames) {
+      this.$el.classList.remove(className)
+    }
   }
 
   findAll(selector) {
     return this.$el.querySelectorAll(selector)
+  }
+
+  find(select) {
+    return dom(this.$el.querySelector(select))
+  }
+
+  focus() {
+    this.$el.focus()
+    return this
   }
 
   css(styles = {}) {

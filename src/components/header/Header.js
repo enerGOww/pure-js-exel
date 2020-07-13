@@ -3,6 +3,13 @@ import {BaseComponent} from '@core/BaseComponent'
 export class Header extends BaseComponent {
   static className = 'header'
 
+  constructor($root, options) {
+    super($root, {
+      name: 'header',
+      ...options,
+    });
+  }
+
   toHTML() {
     return `
     <input type="text" class="header__input" value="Новая таблица" />
