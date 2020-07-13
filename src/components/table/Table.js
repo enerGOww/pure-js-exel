@@ -9,7 +9,7 @@ export class Table extends BaseComponent {
   constructor($root) {
     super($root, {
       name: 'table',
-      listeners: ['mousedown'],
+      listeners: ['mousedown', 'keydown'],
     })
   }
 
@@ -64,6 +64,17 @@ export class Table extends BaseComponent {
     } else if (element.dataset.id && event.shiftKey) {
       this.selection.selectGroup(element, this.$root)
     } else if (element.dataset.id) {
+      this.selection.select(element)
+    }
+  }
+
+  onKeydown(event) {
+    const keys = ['Enter', 'Tab', 'ArrowLeft', 'ArrowDown', 'ArrowUp', 'ArrowRight']
+    const {key} = event
+    if (keys.includes(key) && !event.shiftKey) {
+      event.preventDefault()
+      const nextCellId = this.selection.nextSelection(key)
+      const element = this.$root.find(`[data-id="${nextCellId}"]`)
       this.selection.select(element)
     }
   }

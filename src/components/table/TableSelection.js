@@ -8,7 +8,7 @@ export class TableSelection {
     this.clear()
     this.group.push(element)
     this.current = element
-    element.addClass('table__cell--selected')
+    element.focus().addClass('table__cell--selected')
   }
 
   clear() {
@@ -29,6 +29,29 @@ export class TableSelection {
     for (const cell of cells) {
       cell.addClass('table__cell--selected')
     }
+  }
+
+  nextSelection(key) {
+    const id = this._parseCellId(this.current)
+
+    switch (key) {
+      case 'Enter':
+      case 'ArrowDown':
+        id.row++
+        break
+      case 'Tab':
+      case 'ArrowRight':
+        id.column = String.fromCharCode(id.column.charCodeAt(0) + 1)
+        break
+      case 'ArrowLeft':
+        id.column = id.column === 'A' ? 'A' : String.fromCharCode(id.column.charCodeAt(0) - 1)
+        break
+      case 'ArrowUp':
+        id.row = id.row === 1 ? 1 : id.row - 1
+        break
+    }
+
+    return `${id.row}:${id.column}`
   }
 
   _matrix(element, $root) {
