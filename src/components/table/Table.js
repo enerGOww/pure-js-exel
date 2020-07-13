@@ -6,10 +6,11 @@ import {TableSelection} from '@/components/table/TableSelection'
 export class Table extends BaseComponent {
   static className = 'table'
 
-  constructor($root) {
+  constructor($root, options) {
     super($root, {
       name: 'table',
-      listeners: ['mousedown', 'keydown'],
+      listeners: ['mousedown', 'keydown', 'input'],
+      ...options,
     })
   }
 
@@ -17,15 +18,19 @@ export class Table extends BaseComponent {
     return generateTable(100)
   }
 
-  prepare() {
-    super.prepare()
-  }
-
   init() {
     super.init()
 
     this.selection = new TableSelection()
-    this.selection.select(this.$root.find('[data-id="1:A"]'))
+    this.selectCell(this.$root.find('[data-id="1:A"]'))
+
+    this.on('formula:input', text => this.selection.current.rewriteText(text))
+        .on('formula:enter', () => this.selection.current.focus())
+  }
+
+  selectCell(cell) {
+    this.selection.select(cell)
+    this.emit('table:switch-selected', cell.getText())
   }
 
   onMousedown(event) {
@@ -64,7 +69,7 @@ export class Table extends BaseComponent {
     } else if (element.dataset.id && event.shiftKey) {
       this.selection.selectGroup(element, this.$root)
     } else if (element.dataset.id) {
-      this.selection.select(element)
+      this.selectCell(element)
     }
   }
 
@@ -75,7 +80,12 @@ export class Table extends BaseComponent {
       event.preventDefault()
       const nextCellId = this.selection.nextSelection(key)
       const element = this.$root.find(`[data-id="${nextCellId}"]`)
-      this.selection.select(element)
+      this.selectCell(element)
     }
+  }
+
+  onInput(event) {
+    const element = dom(event.target)
+    this.emit('table:input', element.getText())
   }
 }

@@ -20,6 +20,15 @@ class Dom {
     return this.$el.outerHTML.trim()
   }
 
+  rewriteText(text) {
+    this.$el.textContent = text
+    return this
+  }
+
+  getText() {
+    return this.$el.textContent !== null ? this.$el.textContent : ''
+  }
+
   clear() {
     this.setHtml('')
     return this
