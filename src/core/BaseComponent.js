@@ -6,6 +6,8 @@ export class BaseComponent extends DomListener {
     this.name = options.name || ''
     this._emitter = options.emitter
     this._unsubscribes = []
+    this.store = options.store
+    this._storeUnsb = []
 
     this.prepare()
   }
@@ -28,6 +30,15 @@ export class BaseComponent extends DomListener {
     return this
   }
 
+  dispatch(action) {
+    this.store.dispatch(action)
+  }
+
+  subscribe(fn) {
+    const unsub = this.store.subscribe(fn)
+    this._storeUnsb.push(unsub)
+  }
+
   init() {
     this.initDomListeners()
   }
@@ -35,5 +46,6 @@ export class BaseComponent extends DomListener {
   destroy() {
     this.removeDomListeners()
     this._unsubscribes.forEach(unsub => unsub())
+    this._storeUnsb.forEach(unsub => unsub())
   }
 }
