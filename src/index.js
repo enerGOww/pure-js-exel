@@ -6,12 +6,12 @@ import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/table/Table'
 import {Store} from '@core/stateStore/Store'
 import {rootReducer} from '@/state/rootReducer'
-import {getStorageDataByKey, updateStorageByKeyAndState} from '@core/utils'
+import {updateStorageByKeyAndState} from '@core/utils'
+import {initialState} from '@/state/initialState'
 
-const store = new Store(rootReducer, getStorageDataByKey('excel-state'))
+const store = new Store(rootReducer, initialState)
 
 store.subscribe(state => {
-  console.log('App State: ', state)
   updateStorageByKeyAndState('excel-state', state)
 })
 

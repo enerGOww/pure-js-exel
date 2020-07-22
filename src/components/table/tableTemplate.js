@@ -14,7 +14,7 @@ function createCell(columnName, rowName, state) {
       contenteditable="true"
       data-column-name="${columnName}"
       data-id="${rowName}:${columnName}"
-      style="width: ${getWidth(state.tableState, columnName)}"
+      style="width: ${getWidth(state, columnName)}"
     ></div>
   `
 }
@@ -66,7 +66,7 @@ export function generateTable(rowsCount = 100, state = {}) {
         {length: columnsCount},
         (value, index) => String.fromCharCode(CODES.A + index)
     )
-        .map(((value) => createCell(value, i, state)))
+        .map(((value) => createCell(value, i, state.tableState)))
         .join('')
     rows.push(createRow(cells, getHeight(state.tableState, i), i))
   }
