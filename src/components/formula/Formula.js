@@ -7,6 +7,7 @@ export class Formula extends BaseComponent {
     super($root, {
       name: Formula.className,
       listeners: ['input', 'keydown'],
+      subscribe: ['currentText'],
       ...options,
     })
   }
@@ -25,10 +26,12 @@ export class Formula extends BaseComponent {
 
   init() {
     super.init()
-    const input = this.$root.find(`[data-input="formula"]`)
+    this._input = this.$root.find(`[data-input="formula"]`)
+    this.on('table:switch-selected', text => this._input.rewriteText(text))
+  }
 
-    this.on('table:switch-selected', text => input.rewriteText(text))
-        .subscribe(state => input.rewriteText(state.currentText))
+  storeChanged({currentText}) {
+    this._input.rewriteText(currentText)
   }
 
   onInput(event) {

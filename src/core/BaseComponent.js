@@ -5,9 +5,9 @@ export class BaseComponent extends DomListener {
     super($root, options.listeners)
     this.name = options.name || ''
     this._emitter = options.emitter
+    this.subscribe = options.subscribe || []
     this._unsubscribes = []
     this.store = options.store
-    this._storeUnsb = []
 
     this.prepare()
   }
@@ -34,19 +34,18 @@ export class BaseComponent extends DomListener {
     this.store.dispatch(action)
   }
 
-  subscribe(fn) {
-    const unsub = this.store.subscribe(fn)
-    this._storeUnsb.push(unsub)
-    return this
-  }
-
   init() {
     this.initDomListeners()
+  }
+
+  storeChanged(changes) {}
+
+  isWatching(key) {
+    return this.subscribe.includes(key)
   }
 
   destroy() {
     this.removeDomListeners()
     this._unsubscribes.forEach(unsub => unsub())
-    this._storeUnsb.forEach(unsub => unsub())
   }
 }
