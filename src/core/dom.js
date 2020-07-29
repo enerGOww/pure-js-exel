@@ -45,7 +45,6 @@ class Dom {
   append(node) {
     if (node instanceof Dom) {
       this.$el.append(node.$el)
-      console.log(node.$el)
     } else {
       this.$el.append(node)
     }

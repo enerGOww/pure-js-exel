@@ -25,8 +25,11 @@ export class Table extends BaseComponent {
     this.selection = new TableSelection()
     this.selectCell(this.$root.find('[data-id="1:A"]'))
 
-    this.on('formula:input', text => this.selection.current.rewriteText(text))
-        .on('formula:enter', () => this.selection.current.focus())
+    this.on('formula:enter', () => this.selection.current.focus())
+        .on('formula:input', text => {
+          this.selection.current.rewriteText(text)
+          this.updateTextInStore(text)
+        })
   }
 
   selectCell(cell) {
@@ -104,8 +107,14 @@ export class Table extends BaseComponent {
     }
   }
 
+  updateTextInStore(value) {
+    this.dispatch(actions.changeText({
+      id: this.selection.current.dataset.id,
+      text: value,
+    }))
+  }
+
   onInput(event) {
-    const element = dom(event.target)
-    this.emit('table:input', element.getText())
+    this.updateTextInStore(dom(event.target).getText())
   }
 }

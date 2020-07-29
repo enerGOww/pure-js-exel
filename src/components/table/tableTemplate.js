@@ -4,18 +4,20 @@ const CODES = {
 }
 
 const DEFAULT_WIDTH = '120px'
-
 const DEFAULT_HEIGHT = '20px'
+const DEFAULT_VALUE = ''
 
 function createCell(columnName, rowName, state) {
+  const id = `${rowName}:${columnName}`
+  const cellValue = state.dataState[id] || DEFAULT_VALUE
   return `
     <div
       class="table__cell"
       contenteditable="true"
       data-column-name="${columnName}"
-      data-id="${rowName}:${columnName}"
+      data-id="${id}"
       style="width: ${getWidth(state, columnName)}"
-    ></div>
+    >${cellValue}</div>
   `
 }
 
@@ -42,11 +44,11 @@ function createRow(content, height, rowNumber = null) {
 }
 
 function getWidth(state, value) {
-  return state[value] || DEFAULT_WIDTH
+  return state.tableState[value] || DEFAULT_WIDTH
 }
 
 function getHeight(state, value) {
-  return state[value] || DEFAULT_HEIGHT
+  return state.tableState[value] || DEFAULT_HEIGHT
 }
 
 export function generateTable(rowsCount = 100, state = {}) {
@@ -56,7 +58,7 @@ export function generateTable(rowsCount = 100, state = {}) {
   const columns = new Array(columnsCount)
       .fill('')
       .map(((value, index) => String.fromCharCode(CODES.A + index)))
-      .map(value => createColumn(value, getWidth(state.tableState, value)))
+      .map(value => createColumn(value, getWidth(state, value)))
       .join('')
 
   rows.push(createRow(columns, DEFAULT_HEIGHT))
@@ -66,9 +68,9 @@ export function generateTable(rowsCount = 100, state = {}) {
         {length: columnsCount},
         (value, index) => String.fromCharCode(CODES.A + index)
     )
-        .map(((value) => createCell(value, i, state.tableState)))
+        .map(value => createCell(value, i, state))
         .join('')
-    rows.push(createRow(cells, getHeight(state.tableState, i), i))
+    rows.push(createRow(cells, getHeight(state, i), i))
   }
 
   return rows.join('')

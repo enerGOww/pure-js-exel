@@ -37,6 +37,7 @@ export class BaseComponent extends DomListener {
   subscribe(fn) {
     const unsub = this.store.subscribe(fn)
     this._storeUnsb.push(unsub)
+    return this
   }
 
   init() {

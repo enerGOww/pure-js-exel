@@ -28,7 +28,7 @@ export class Formula extends BaseComponent {
     const input = this.$root.find(`[data-input="formula"]`)
 
     this.on('table:switch-selected', text => input.rewriteText(text))
-        .on('table:input', text => input.rewriteText(text))
+        .subscribe(state => input.rewriteText(state.currentText))
   }
 
   onInput(event) {
