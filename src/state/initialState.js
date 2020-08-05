@@ -4,7 +4,6 @@ const defaultState = {
   tableState: {},
   dataState: {},
   styleState: {},
-  currentText: '',
   headerState: 'New Table',
 }
 

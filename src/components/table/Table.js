@@ -134,5 +134,6 @@ export class Table extends BaseComponent {
 
   onInput(event) {
     this.updateTextInStore(dom(event.target).getText())
+    this.emit('table:changeText', dom(event.target).getText())
   }
 }
