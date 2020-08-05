@@ -5,6 +5,7 @@ const defaultState = {
   dataState: {},
   styleState: {},
   headerState: 'New Table',
+  currentText: '',
 }
 
 export const initialState = getStorageDataByKey('excel-state')

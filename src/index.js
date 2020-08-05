@@ -6,14 +6,16 @@ import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/table/Table'
 import {Store} from '@core/stateStore/Store'
 import {rootReducer} from '@/state/rootReducer'
-import {updateStorageByKeyAndState} from '@core/utils'
+import {debounce, updateStorageByKeyAndState} from '@core/utils'
 import {initialState} from '@/state/initialState'
 
 const store = new Store(rootReducer, initialState)
 
-store.subscribe(state => {
+const stateListener = debounce(state => {
   updateStorageByKeyAndState('excel-state', state)
-})
+}, 300)
+
+store.subscribe(stateListener)
 
 const excel = new Excel('#app', {
   components: [Header, Toolbar, Formula, Table],

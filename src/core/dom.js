@@ -95,6 +95,15 @@ class Dom {
     return this
   }
 
+  setAttribute(name, value) {
+    this.$el.setAttribute(name, value)
+    return this
+  }
+
+  getAttribute(name) {
+    return this.$el.getAttribute(name)
+  }
+
   css(styles = {}) {
     Object.keys(styles).forEach(key => {
       this.$el.style[key] = styles[key]

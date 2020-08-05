@@ -10,7 +10,7 @@ export function rootReducer(state, action) {
     case CHANGE_TEXT:
       prevState = state['dataState'] || {}
       prevState[action.data.id] = action.data.text
-      return {...state, dataState: prevState}
+      return {...state, dataState: prevState, currentText: action.data.text}
     case CHANGE_HEADER:
       return {...state, headerState: action.data.text}
     case CHANGE_STYLE:

@@ -1,6 +1,5 @@
-// import {camelToKebab} from '@core/utils'
-
 import {camelToKebab} from '@core/utils'
+import {parse} from '@core/parse'
 
 const CODES = {
   A: 65,
@@ -8,7 +7,7 @@ const CODES = {
 }
 
 const DEFAULT_WIDTH = '120px'
-const DEFAULT_HEIGHT = '20px'
+const DEFAULT_HEIGHT = '22px'
 const DEFAULT_VALUE = ''
 
 function createCell(columnName, rowName, state) {
@@ -20,8 +19,9 @@ function createCell(columnName, rowName, state) {
       contenteditable="true"
       data-column-name="${columnName}"
       data-id="${id}"
+      data-value="${cellValue}"
       style="width: ${getWidth(state, columnName)};${getStyles(state, id)}"
-    >${cellValue}</div>
+    >${parse(cellValue)}</div>
   `
 }
 

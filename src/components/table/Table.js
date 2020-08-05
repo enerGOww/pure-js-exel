@@ -4,6 +4,7 @@ import {dom} from '@core/dom'
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/state/actions'
 import {defaultStyles} from '@/components/defaultStyles'
+import {parse} from '@core/parse'
 
 export class Table extends BaseComponent {
   static className = 'table'
@@ -30,9 +31,11 @@ export class Table extends BaseComponent {
     this.selectCell(this.$root.find('[data-id="1:A"]'))
 
     this.on('formula:enter', () => this.selection.current.focus())
-        .on('formula:input', text => {
-          this.selection.current.rewriteText(text)
-          this.updateTextInStore(text)
+        .on('formula:input', value => {
+          this.selection.current
+              .setAttribute('data-value', value)
+              .rewriteText(parse(value))
+          this.updateTextInStore(value)
         })
         .on('toolbar:applyStyle', style => {
           this.selection.applyStyle(style)
@@ -43,7 +46,7 @@ export class Table extends BaseComponent {
   selectCell(cell) {
     this.selection.select(cell)
     const styles = cell.getStyles(Object.keys(defaultStyles))
-    this.emit('table:switch-selected', cell.getText(), styles)
+    this.emit('table:switch-selected', cell, styles)
   }
 
   onMousedown(event) {
@@ -134,6 +137,5 @@ export class Table extends BaseComponent {
 
   onInput(event) {
     this.updateTextInStore(dom(event.target).getText())
-    this.emit('table:changeText', dom(event.target).getText())
   }
 }
