@@ -111,7 +111,6 @@ class Dom {
   }
 
   getStyles(styles = []) {
-    // console.log(this.$el.getComputedStyle())
     return styles.reduce((res, s) => {
       res[s] = this.$el.style[s]
       return res
