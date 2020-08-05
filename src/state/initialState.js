@@ -3,6 +3,7 @@ import {getStorageDataByKey} from '@core/utils'
 const defaultState = {
   tableState: {},
   dataState: {},
+  styleState: {},
   currentText: '',
   headerState: 'New Table',
 }

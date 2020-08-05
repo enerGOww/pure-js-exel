@@ -3,6 +3,7 @@ import {generateTable} from '@/components/table/tableTemplate'
 import {dom} from '@core/dom'
 import {TableSelection} from '@/components/table/TableSelection'
 import * as actions from '@/state/actions'
+import {defaultStyles} from '@/components/defaultStyles'
 
 export class Table extends BaseComponent {
   static className = 'table'
@@ -19,10 +20,13 @@ export class Table extends BaseComponent {
     return generateTable(100, this.store.getState())
   }
 
+  prepare() {
+    this.selection = new TableSelection()
+  }
+
   init() {
     super.init()
 
-    this.selection = new TableSelection()
     this.selectCell(this.$root.find('[data-id="1:A"]'))
 
     this.on('formula:enter', () => this.selection.current.focus())
@@ -30,11 +34,16 @@ export class Table extends BaseComponent {
           this.selection.current.rewriteText(text)
           this.updateTextInStore(text)
         })
+        .on('toolbar:applyStyle', style => {
+          this.selection.applyStyle(style)
+          this.updateStyleInStore(style)
+        })
   }
 
   selectCell(cell) {
     this.selection.select(cell)
-    this.emit('table:switch-selected', cell.getText())
+    const styles = cell.getStyles(Object.keys(defaultStyles))
+    this.emit('table:switch-selected', cell.getText(), styles)
   }
 
   onMousedown(event) {
@@ -112,6 +121,15 @@ export class Table extends BaseComponent {
       id: this.selection.current.dataset.id,
       text: value,
     }))
+  }
+
+  updateStyleInStore(style) {
+    for (const current of this.selection.group) {
+      this.dispatch(actions.changeStyle({
+        id: current.dataset.id,
+        style,
+      }))
+    }
   }
 
   onInput(event) {

@@ -1,3 +1,7 @@
+// import {camelToKebab} from '@core/utils'
+
+import {camelToKebab} from '@core/utils'
+
 const CODES = {
   A: 65,
   Z: 90,
@@ -16,7 +20,7 @@ function createCell(columnName, rowName, state) {
       contenteditable="true"
       data-column-name="${columnName}"
       data-id="${id}"
-      style="width: ${getWidth(state, columnName)}"
+      style="width: ${getWidth(state, columnName)};${getStyles(state, id)}"
     >${cellValue}</div>
   `
 }
@@ -49,6 +53,17 @@ function getWidth(state, value) {
 
 function getHeight(state, value) {
   return state.tableState[value] || DEFAULT_HEIGHT
+}
+
+function getStyles(state, id) {
+  let styles = ''
+  // eslint-disable-next-line guard-for-in
+  for (const style in state.styleState[id]) {
+    const styleName = camelToKebab(style)
+    styles += ` ${styleName}:${state.styleState[id][style]};`
+  }
+
+  return styles
 }
 
 export function generateTable(rowsCount = 100, state = {}) {

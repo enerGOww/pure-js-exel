@@ -1,4 +1,4 @@
-import {CHANGE_HEADER, CHANGE_TEXT, TABLE_RESIZE} from '@/state/types'
+import {CHANGE_HEADER, CHANGE_STYLE, CHANGE_TEXT, TABLE_RESIZE} from '@/state/types'
 
 export function tableResize(data) {
   return {
@@ -17,6 +17,13 @@ export function changeText(data) {
 export function changeHeader(data) {
   return {
     type: CHANGE_HEADER,
+    data,
+  }
+}
+
+export function changeStyle(data) {
+  return {
+    type: CHANGE_STYLE,
     data,
   }
 }

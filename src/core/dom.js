@@ -66,6 +66,16 @@ class Dom {
     }
   }
 
+  toggleClass(...classNames) {
+    for (const className of classNames) {
+      if (this.$el.classList.value.includes(className)) {
+        this.$el.classList.remove(className)
+      } else {
+        this.$el.classList.add(className)
+      }
+    }
+  }
+
   removeClass(...classNames) {
     for (const className of classNames) {
       this.$el.classList.remove(className)
@@ -89,6 +99,14 @@ class Dom {
     Object.keys(styles).forEach(key => {
       this.$el.style[key] = styles[key]
     })
+  }
+
+  getStyles(styles = []) {
+    // console.log(this.$el.getComputedStyle())
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
   }
 }
 

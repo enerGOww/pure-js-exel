@@ -1,4 +1,4 @@
-import {CHANGE_HEADER, CHANGE_TEXT, TABLE_RESIZE} from '@/state/types'
+import {CHANGE_HEADER, CHANGE_STYLE, CHANGE_TEXT, TABLE_RESIZE} from '@/state/types'
 
 export function rootReducer(state, action) {
   let prevState
@@ -13,6 +13,10 @@ export function rootReducer(state, action) {
       return {...state, currentText: action.data.text, dataState: prevState}
     case CHANGE_HEADER:
       return {...state, headerState: action.data.text}
+    case CHANGE_STYLE:
+      prevState = state['styleState'] || {}
+      prevState[action.data.id] = {...prevState[action.data.id], ...action.data.style}
+      return {...state, styleState: prevState}
 
     default: return state
   }

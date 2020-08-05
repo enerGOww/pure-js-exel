@@ -54,6 +54,10 @@ export class TableSelection {
     return `${id.row}:${id.column}`
   }
 
+  applyStyle(style) {
+    this.group.forEach(el => el.css(style))
+  }
+
   _matrix(element, $root) {
     const current = this._parseCellId(this.current)
     const target = this._parseCellId(element)
