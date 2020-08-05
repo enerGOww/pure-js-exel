@@ -5,7 +5,9 @@ export class BaseComponent extends DomListener {
     super($root, options.listeners)
     this.name = options.name || ''
     this._emitter = options.emitter
+    this.subscribe = options.subscribe || []
     this._unsubscribes = []
+    this.store = options.store
 
     this.prepare()
   }
@@ -28,8 +30,18 @@ export class BaseComponent extends DomListener {
     return this
   }
 
+  dispatch(action) {
+    this.store.dispatch(action)
+  }
+
   init() {
     this.initDomListeners()
+  }
+
+  storeChanged(changes) {}
+
+  isWatching(key) {
+    return this.subscribe.includes(key)
   }
 
   destroy() {

@@ -45,7 +45,6 @@ class Dom {
   append(node) {
     if (node instanceof Dom) {
       this.$el.append(node.$el)
-      console.log(node.$el)
     } else {
       this.$el.append(node)
     }
@@ -64,6 +63,16 @@ class Dom {
   addClass(...classNames) {
     for (const className of classNames) {
       this.$el.classList.add(className)
+    }
+  }
+
+  toggleClass(...classNames) {
+    for (const className of classNames) {
+      if (this.$el.classList.value.includes(className)) {
+        this.$el.classList.remove(className)
+      } else {
+        this.$el.classList.add(className)
+      }
     }
   }
 
@@ -86,10 +95,26 @@ class Dom {
     return this
   }
 
+  setAttribute(name, value) {
+    this.$el.setAttribute(name, value)
+    return this
+  }
+
+  getAttribute(name) {
+    return this.$el.getAttribute(name)
+  }
+
   css(styles = {}) {
     Object.keys(styles).forEach(key => {
       this.$el.style[key] = styles[key]
     })
+  }
+
+  getStyles(styles = []) {
+    return styles.reduce((res, s) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
   }
 }
 
